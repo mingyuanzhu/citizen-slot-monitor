@@ -1,19 +1,19 @@
 package main
 
 import (
-	"flag"
-	"os"
-	"log"
-	"net/url"
-	"time"
-	"fmt"
-	"strconv"
-	"net/http"
-	"io/ioutil"
-	"golang.org/x/net/html"
-	"strings"
-	"gopkg.in/gomail.v2"
 	"crypto/tls"
+	"flag"
+	"fmt"
+	"golang.org/x/net/html"
+	"gopkg.in/gomail.v2"
+	"io/ioutil"
+	"log"
+	"net/http"
+	"net/url"
+	"os"
+	"strconv"
+	"strings"
+	"time"
 )
 
 const (
@@ -54,7 +54,7 @@ var offset = flag.Duration(
 
 var interval = flag.Duration(
 	"interval",
-	time.Minute * 5,
+	time.Minute*5,
 	"Each check available interval",
 )
 
@@ -104,8 +104,6 @@ func main() {
 
 	flag.Parse()
 
-	//sendMail(nextNMonthDateStr(0), *fromMail)
-
 	validate()
 
 	round := 0
@@ -114,7 +112,7 @@ func main() {
 	go func() {
 		ticker := time.NewTicker(*monitorInterval)
 		for range ticker.C {
-			sendMail("internal check have run round " + strconv.Itoa(round), *fromMail)
+			sendMail("internal check have run round "+strconv.Itoa(round), *fromMail)
 		}
 
 	}()
@@ -139,7 +137,6 @@ func main() {
 
 		time.Sleep(*interval)
 	}
-
 
 }
 
@@ -239,7 +236,7 @@ func GetContents(nextNMonth int) string {
 }
 
 /** -d apptDetails.apptType=CSCA \
--d apptDetails.identifier1=S9076665A \
+-d apptDetails.identifier1=xxxxxxxxx \
 -d apptDetails.identifier2=1 \
 -d apptDetails.changeLimitFlg=N \
 -d apptDetails.latestValidityStartDt=26/03/2018 \
@@ -311,7 +308,7 @@ func sendMail(content string, to string) {
 	d := gomail.NewDialer(*smtp, 587, *fromMail, *mailPassword)
 	d.TLSConfig = &tls.Config{InsecureSkipVerify: true}
 
-	// Send the email to Bob, Cora and Dan.
+	// Send the email
 	if err := d.DialAndSend(m); err != nil {
 		panic(err)
 	}
